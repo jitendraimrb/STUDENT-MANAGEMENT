@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coforge.entity.Country;
+import com.coforge.exception.CountryNotAvailableException;
 import com.coforge.service.CountryVerifierService;
 
 @RestController
@@ -32,7 +33,7 @@ public class CountryVerifierController {
 	}
 	
 	@GetMapping("/countryByCountryName/{countryName}")
-	public Optional<Country> getCountryList(@PathVariable("countryName") String countryName){
+	public Country getCountryList(@PathVariable("countryName") String countryName) throws CountryNotAvailableException{
 		return contryService.getCountryDetailBasisOnCountryName(countryName);
 	}
 }

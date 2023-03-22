@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.coforge.dao.CountryRepository;
 import com.coforge.entity.Country;
+import com.coforge.exception.CountryNotAvailableException;
 
 @Service
 public class CountryVerifierService {
@@ -24,8 +25,13 @@ public class CountryVerifierService {
 		return countryRepository.findAll();
 	}
 	
-	public Optional<Country> getCountryDetailBasisOnCountryName(String countryName) {
-		return countryRepository.findAll().stream().filter(s->s.getCountryName().equals(countryName)).findFirst();
+	public Country getCountryDetailBasisOnCountryName(String countryName) {
+		Country object = countryRepository.findAll().stream().filter(s->s.getCountryName().equals(countryName))
+				.findFirst().orElse(null);
+		if(object== null)
+			throw new CountryNotAvailableException("Country is not available for admission of requested country name");
+		else
+			return object;
 	}
 
 }
